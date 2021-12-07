@@ -1,5 +1,5 @@
 # JavaMachineLearning
-In progress library for machine learning in Java. Currently has linear and logistic regression. 
+In progress library for machine learning in Java. Currently has multivariable linear and logistic regression. 
 
 ## Sample use: 
 
