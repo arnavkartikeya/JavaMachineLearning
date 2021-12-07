@@ -11,8 +11,8 @@ public static void main(String[] args) throws FileNotFoundException {
         Matrix y = data.getCol(1);
         //fitting model
         LinearRegressionModel l = new LinearRegressionModel(x, y);
-        Metrics test = new MeanSquaredLoss(100, null, y );
-        Matrix weights =  l.fit(1000,0.01 , test);
+        Metrics test = new MeanSquaredLoss(500, null, y );
+        Matrix weights =  l.fit(5000,0.01 , test);
         //outputs
         double[][] testValues = {{7}};
         Matrix values = new Matrix(testValues);
