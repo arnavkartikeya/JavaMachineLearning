@@ -25,16 +25,16 @@ public static void main(String[] args) throws FileNotFoundException {
 
 ## Output: 
 ```
-Metric: 809.0
-Metric: 3.403854252358098
-Metric: 2.145630842610738
-Metric: 1.3525055338586076
-Metric: 0.8525563590856811
-Metric: 0.537411734903422
-Metric: 0.3387592734885464
-Metric: 0.2135380341017495
-Metric: 0.13460440961059672
-Metric: 0.08484833703200481
-Equation: 4.519556907674327 + 2.0352109239044593x_1
+Metric at 0th iteration: 809.0
+Metric at 500th iteration: 0.537411734903422
+Metric at 1000th iteration: 0.05348443128961202
+Metric at 1500th iteration: 0.005322891564486252
+Metric at 2000th iteration: 5.297462069636101E-4
+Metric at 2500th iteration: 5.272154061232164E-5
+Metric at 3000th iteration: 5.246966958911073E-6
+Metric at 3500th iteration: 5.221900185002276E-7
+Metric at 4000th iteration: 5.196953164613539E-8
+Metric at 4500th iteration: 5.172125325498477E-9
+Equation: 4.999952867236871 + 2.0000034542866003x_1
 ```
  
