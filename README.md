@@ -37,4 +37,7 @@ Metric at 4000th iteration: 5.196953164613539E-8
 Metric at 4500th iteration: 5.172125325498477E-9
 Equation: 4.999952867236871 + 2.0000034542866003x_1
 ```
- 
+## What's to come: 
+* Gradient Checking (in progress)
+* Nueral Networks 
+* More Metrics (cross entropy, etc.)
