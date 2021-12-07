@@ -20,6 +20,21 @@ public static void main(String[] args) throws FileNotFoundException {
 
         System.out.println("Equation: " + l.getEquation());
 
-    }
+}
+```
+
+## Output: 
+```
+Metric: 809.0
+Metric: 3.403854252358098
+Metric: 2.145630842610738
+Metric: 1.3525055338586076
+Metric: 0.8525563590856811
+Metric: 0.537411734903422
+Metric: 0.3387592734885464
+Metric: 0.2135380341017495
+Metric: 0.13460440961059672
+Metric: 0.08484833703200481
+Equation: 4.519556907674327 + 2.0352109239044593x_1
 ```
  
