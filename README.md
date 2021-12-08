@@ -1,5 +1,5 @@
 # JavaMachineLearning
-In progress library for machine learning in Java aimed for easy and beginner friendly use. Currently has multivariable linear and logistic regression. 
+In progress library for machine learning in Java aimed for easy and beginner friendly use. Currently has multivariable linear regression and logistic regression (softmax regression still to come). 
 
 ## Sample use: 
 
