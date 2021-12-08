@@ -50,16 +50,6 @@ public class LinearRegressionModel {
 
         return w;
     }
-    //mean square error cost
-    public double cost(Matrix err){
-        double sumSquared = 0;
-        for(int row = 0; row < err.getHeight(); row++){
-            sumSquared += Math.pow(err.getElement(row, 0), 2);
-        }
-        return (double)(sumSquared/(err.getHeight()));
-    }
-
-
     //returns a string with the equation in a + bx1 + cx2 form
     public String getEquation(){
         String ans = "";
@@ -127,6 +117,9 @@ public class LinearRegressionModel {
         this.testOutputs.removeRow(0);
     }
 
+    /*
+    -------------------------------------------------------
+     */
     //under developement - currently doesn't work
     public double gradientCheck(double epsilon){
         dApprox = new double[this.weights.getHeight()][this.weights.getWidth()];
