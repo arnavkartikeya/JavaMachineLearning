@@ -67,7 +67,7 @@ public class LogisticRegressionModel {
             //w = weight matrix
             w = w.subtractMatrix(gradientTemp);
             this.weights = w;
-            test.setHypothesis(hyp);
+            test.setHypothesis(round(hyp));
             if(i%test.getIncrements() == 0){
                 System.out.println("Metric: " + test.compute());
             }
@@ -126,6 +126,23 @@ public class LogisticRegressionModel {
         Matrix a = new Matrix(ans);
         return a;
     }
+    //changes all values below or equal to 0.5 to 0 and values above 0.5 to 1
+    public Matrix round(Matrix a){
+        Matrix ans = a;
+        for(int row = 0; row < a.getHeight(); row++){
+            for(int col = 0; col < a.getWidth(); col++){
+                if(ans.getElement(row, col) <= 0.5){
+                    ans.setElement(0, row, col);
+                }else{
+                    ans.setElement(1, row, col);
+                }
+            }
+        }
+        return ans;
+    }
+
+
+
     //method which randomly selects values for training and test dataset
     public void makeTestSet(double testRatio){
         //creating the randomly chosen rows (no duplicates using hashset)

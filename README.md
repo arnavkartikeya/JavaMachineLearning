@@ -41,3 +41,5 @@ Equation: 4.999952867236871 + 2.0000034542866003x_1
 * Gradient Checking (in progress)
 * Nueral Networks 
 * More Metrics (cross entropy, etc.)
+* Matrices will hold generic values rather than just doubles
+
