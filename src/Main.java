@@ -10,9 +10,9 @@ public class Main {
         //fitting model
         LogisticRegressionModel l = new LogisticRegressionModel(x, y);
         Metrics test = new Accuracy(100, null, y );
-        Matrix weights =  l.fit(1000,0.01 , test);
+        Matrix weights =  l.fit(5000,0.01 , test);
         //outputs
-        double[][] testValues = {{1}};
+        double[][] testValues = {{1,6}};
         Matrix values = new Matrix(testValues);
         Matrix answers = l.predict(values);
         answers.printMatrix();

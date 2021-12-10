@@ -77,6 +77,18 @@ public class LogisticRegressionModel {
     }
 
 
+    //one vs all logistic regression
+    /*
+    First: Create a duplicate of matrix data. Find the number of different clusters using a hashtable
+    Second: make a loop that iterates through the size of the hashtable
+    Third: create a matrix method which sets all values to another [setAll(double element, double replacment)].
+    Fourth: Set all output values besides a one chosen one to 1. The chosen one should be set to 0.
+    Fifth: Do logistic regression
+    Sixth: Repease the last few steps for each otehr cluster
+    Seventh: When given an input, use all models found and return the answer of the model with the highest confidence 
+
+     */
+
     public double cost(Matrix hyp){
         double sum = 0;
         for(int row = 0; row < hyp.getHeight(); row++){
