@@ -84,10 +84,72 @@ public class LogisticRegressionModel {
     Third: create a matrix method which sets all values to another [setAll(double element, double replacment)].
     Fourth: Set all output values besides a one chosen one to 1. The chosen one should be set to 0.
     Fifth: Do logistic regression
-    Sixth: Repease the last few steps for each otehr cluster
-    Seventh: When given an input, use all models found and return the answer of the model with the highest confidence 
+    Sixth: Repeat the last few steps for each otehr cluster
+    Seventh: When given an input, use all models found and return the answer of the model with the highest confidence
 
      */
+    public Matrix[] fitOneVsAll(int iterations, double alpha, Matrix data, Metrics test){
+        //getting the number of clusters
+        Matrix dataTemp = new Matrix(data.getArray());
+        Set<Double> set = new LinkedHashSet<Double>();
+        for(int row = 0; row < data.getHeight(); row++){
+            set.add(dataTemp.getElement(row, dataTemp.getWidth() - 1 ));
+        }
+        int numClusters = set.size();
+
+        Matrix[] weights = new Matrix[set.size()];
+
+        //iterates through the different clusters, sets all other clusters to have a value of 0, and creates a logistic regression model that classifies this new data. Appends the weights into a weight matrix
+        Iterator<Double> it = set.iterator();
+        int index = 0;
+        while(it.hasNext()){
+            double outputElem = it.next();
+            dataTemp.setAll(outputElem, 0);
+            //sets all other outputs to 1
+            for(int i = 0; i < dataTemp.getHeight(); i++){
+                if(dataTemp.getElement(i, dataTemp.getWidth() - 1) != outputElem){
+                    dataTemp.setElement(1, i, dataTemp.getWidth() - 1);
+                }
+            }
+            Matrix x = dataTemp.splitCol(0, dataTemp.getWidth() - 2);
+            Matrix y = dataTemp.getCol(data.getWidth() - 1);
+            LogisticRegressionModel l = new LogisticRegressionModel(x, y);
+            weights[index] = l.fit(iterations, alpha, test);
+            index++;
+            dataTemp = new Matrix(data.getArray());
+        }
+        return weights;
+    }
+    //Matrix must be a single datapoint
+    //change this method signature later so that data isn't in it.
+    public double predict(Matrix[] weights, Matrix d, Matrix value){
+        Set<Double> set = new LinkedHashSet<Double>();
+        for(int row = 0; row < d.getHeight(); row++){
+            set.add(d.getElement(row, d.getWidth() - 1 ));
+        }
+
+        value = value.addOnes();
+        double ans = 0;
+        Matrix prediction;
+
+        Iterator<Double> it = set.iterator();
+        int i = 0;
+        double confidence = 0;
+        while(it.hasNext()){
+            Matrix curr = weights[i];
+            prediction = curr.multiplyMatrix(value);
+            double output = sigmoid(prediction).getElement(0,0);
+            if(output > confidence){
+                ans = it.next();
+                confidence = output;
+            }else{
+                it.next();
+            }
+            i++;
+        }
+
+        return ans;
+    }
 
     public double cost(Matrix hyp){
         double sum = 0;
@@ -113,6 +175,7 @@ public class LogisticRegressionModel {
         }
         return "sigmoid(" + ans + ")";
     }
+
     public Matrix predict(Matrix val){
         val = val.addOnes();
         Matrix ans = val.multiplyMatrix(weights);

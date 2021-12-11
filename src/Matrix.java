@@ -12,6 +12,16 @@ public class Matrix {
         width = arr[0].length;
     }
 
+    public double[][] getArray(){
+        double[][] newArray = new double[this.getHeight()][this.getWidth()];
+        for(int row = 0; row < this.getHeight(); row++){
+            for(int col = 0; col < this.getWidth(); col++){
+                newArray[row][col] = this.matrix[row][col];
+            }
+        }
+        return newArray;
+    }
+
     public Matrix(int row, int column) {
         //make a 2 dimensional array with row and column
         matrix = new double[row][column];
@@ -271,6 +281,23 @@ public class Matrix {
         this.matrix = ans;
         this.height = ans.length;
         this.width = ans[0].length;
+    }
+
+    //sets all elements of this certain value to another value
+    public Matrix setAll(double element, double replacement){
+        double[][] val = new double[this.getHeight()][this.getWidth()];
+        Matrix ans;
+        for(int row = 0; row < this.getHeight(); row++){
+            for(int col = 0; col < this.getWidth(); col++){
+                if(this.getElement(row, col) == element){
+                    val[row][col] = replacement;
+                }else{
+                    val[row][col] = this.getElement(row, col);
+                }
+            }
+        }
+        ans = new Matrix(val);
+        return ans;
     }
 
     //the following two method are used in the logistic regression class to apply sigmoid function to the hypthosesis
