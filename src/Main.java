@@ -4,7 +4,7 @@ import java.io.FileNotFoundException;
 public class Main {
     public static void main(String[] args) throws FileNotFoundException {
 //        //reading data
-        Matrix data = Matrix.readTxt(new File ("src/test.txt"),17, 3 );
+        Matrix data = Matrix.readTxt(new File ("src/test.txt"),12, 3);
         Matrix x = data.splitCol(0, 1);
         Matrix y = data.getCol(2);
 //        //fitting model
@@ -19,9 +19,18 @@ public class Main {
 //        System.out.println("Equation: " + l.getEquation());
 
         LogisticRegressionModel l = new LogisticRegressionModel(x,y);
-        Matrix[] weights = l.fitOneVsAll(1000, 0.01, data, test);
-        double[][] preds = {{4.3, 10}};
-        Matrix predictions = new Matrix(preds);
-        System.out.println(l.predict(weights, data, predictions));
+
+        Matrix weights = l.fit(5000, 0.01, test);
+
+        System.out.println(l.getEquation());
+
+
+//        Matrix[] weights = l.fitOneVsAll(1000, 0.01, data, test);
+//        for(int i = 0; i < weights.length; i++){
+//            System.out.println(l.getEquation(weights[i]));
+//        }
+
+
+        //debugging, finding each logistic regression line
     }
 }

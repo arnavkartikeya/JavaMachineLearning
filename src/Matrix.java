@@ -185,6 +185,20 @@ public class Matrix {
         Matrix ans = new Matrix(arr);
         return ans;
     }
+    public static Matrix readTxt(File f, int height, int width, String delimiter) throws FileNotFoundException {
+        Scanner sc = new Scanner(f);
+        sc.useDelimiter(delimiter);
+        double[][] arr = new double[height][width];
+        for (int row = 0; row < height; row++) {
+            Scanner tempSC = new Scanner(sc.nextLine());
+            tempSC.useDelimiter(delimiter);
+            for(int col = 0; col < width; col++){
+                arr[row][col] = Double.parseDouble(tempSC.next());
+            }
+        }
+        Matrix ans = new Matrix(arr);
+        return ans;
+    }
 
     //method which returns a new matrix from the index of start and end columns
     public Matrix splitCol(int start, int end) {

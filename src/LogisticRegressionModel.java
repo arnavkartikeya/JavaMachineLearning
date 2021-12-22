@@ -137,7 +137,7 @@ public class LogisticRegressionModel {
         double confidence = 0;
         while(it.hasNext()){
             Matrix curr = weights[i];
-            prediction = curr.multiplyMatrix(value);
+            prediction = value.multiplyMatrix(curr);
             double output = sigmoid(prediction).getElement(0,0);
             if(output > confidence){
                 ans = it.next();
@@ -168,6 +168,21 @@ public class LogisticRegressionModel {
             if(row == 0){
                 ans += d.toString() + " + ";
             }else if(row != weights.getHeight() - 1){
+                ans += d.toString() + "x_" + row + " + ";
+            }else{
+                ans += d.toString() + "x_" + row;
+            }
+        }
+        return "sigmoid(" + ans + ")";
+    }
+
+    public String getEquation(Matrix w){
+        String ans = "";
+        for(int row = 0; row < w.getHeight(); row++){
+            Double d = w.getElement(row, 0);
+            if(row == 0){
+                ans += d.toString() + " + ";
+            }else if(row != w.getHeight() - 1){
                 ans += d.toString() + "x_" + row + " + ";
             }else{
                 ans += d.toString() + "x_" + row;
