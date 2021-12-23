@@ -151,6 +151,27 @@ public class LogisticRegressionModel {
         return ans;
     }
 
+    //gives the decision boundary
+    //currently works for only two variables
+    public String decisionBoundary() {
+        //- (parameters[0] + np.dot(parameters[1], x_values)) / parameters[2]
+        String ans = "-((";
+        ans += this.weights.getElement(0, 0);
+        ans += " + ";
+        for(int row = 1; row < this.weights.getHeight() - 1; row++){
+            ans += Double.toString(this.weights.getElement(row, 0))+ "x_" + Integer.toString(row);
+            if (row != this.weights.getHeight() - 2) {
+                ans += " + ";
+            }
+        }
+        ans += ") / ";
+        ans += Double.toString(this.weights.getElement(this.weights.getHeight() - 1,  0));
+        ans += ")";
+        return ans;
+    }
+
+
+
     public double cost(Matrix hyp){
         double sum = 0;
         for(int row = 0; row < hyp.getHeight(); row++){
