@@ -61,7 +61,7 @@ public class LogisticRegressionModel {
             //error
             err = hyp.subtractMatrix(trainOutputs);
             //this is the actual derivatives of theta
-            gradients = xNew.transpose().multiplyMatrix(xNew.multiplyMatrix(w).subtractMatrix(trainOutputs));
+            gradients = xNew.transpose().multiplyMatrix(err);
             //gradients * 1/m * alpha
             Matrix gradientTemp = gradients.scalarMultiplication((alpha/this.trainInputs.getHeight()));
             //w = weight matrix
