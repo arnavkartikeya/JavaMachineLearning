@@ -50,6 +50,38 @@ public class LinearRegressionModel {
 
         return w;
     }
+    //fit w/ regularization
+    public Matrix fit(int numIterations, double alpha, double lambda, Metrics test){
+        Matrix hyp;
+        Matrix err;
+        Matrix xNew = this.trainInputs;
+        Matrix temp2;
+        Matrix gradients;
+        Matrix w = initializeWeights();
+        test.setOutputs(trainOutputs);
+        for(int i = 0; i < numIterations; i++){
+            //hypothesis
+            hyp = trainInputs.multiplyMatrix(w);
+            //error
+            err = hyp.subtractMatrix(trainOutputs);
+            //this is the actual derivatives of theta
+            gradients = xNew.transpose().multiplyMatrix(xNew.multiplyMatrix(w).subtractMatrix(trainOutputs));
+            //settings dTheta to gradients for gradient checking
+            dTheta = gradients;
+            //gradients * 1/m * alpha
+            Matrix gradientTemp = gradients.scalarMultiplication((alpha/this.trainInputs.getHeight()));
+            //w = weight matrix
+            w = w.scalarMultiplication((double)(1 + (alpha * lambda)/this.trainInputs.getHeight())).subtractMatrix(gradientTemp);
+            this.weights = w;
+            test.setHypothesis(hyp);
+            if(i%test.getIncrements() == 0){
+                System.out.println("Metric at " + i + "th iteration: " + test.compute());
+            }
+        }
+
+        return w;
+    }
+
     //mean square error cost
     public double cost(Matrix err){
         double sumSquared = 0;
