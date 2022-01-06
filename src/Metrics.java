@@ -8,6 +8,11 @@ public class Metrics {
        return 0;
     }
 
+    public double compute(double lambda, Matrix weights) {
+        return 0;
+    }
+
+
     public int getIncrements() {
         return 0;
     }

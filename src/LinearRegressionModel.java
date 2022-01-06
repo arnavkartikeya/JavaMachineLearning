@@ -75,7 +75,7 @@ public class LinearRegressionModel {
             this.weights = w;
             test.setHypothesis(hyp);
             if(i%test.getIncrements() == 0){
-                System.out.println("Metric at " + i + "th iteration: " + test.compute());
+                System.out.println("Metric at " + i + "th iteration: " + test.compute(lambda, this.weights));
             }
         }
 

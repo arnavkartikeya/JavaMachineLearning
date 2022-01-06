@@ -17,6 +17,23 @@ public class MeanSquaredLoss extends Metrics {
         }
         return (double)(sumSquared/(err.getHeight()));
     }
+    //loss with regularization
+    public double compute(double lambda, Matrix weights){
+        double ans = 0;
+        Matrix err = hypothesis.subtractMatrix(outputs);
+        double sumSquared = 0;
+        for(int row = 0; row < err.getHeight(); row++){
+            sumSquared += Math.pow(err.getElement(row, 0), 2);
+//            sumSquared += Math.abs(err.getElement(row, 0));
+        }
+        double tempSumSqd = 0;
+        for(int i = 0; i < weights.getHeight(); i++){
+            tempSumSqd += Math.pow(weights.getElement(i, 0), 2);
+        }
+        tempSumSqd *= lambda;
+        sumSquared += tempSumSqd;
+        return (double)(sumSquared/(err.getHeight() * 2));
+    }
 
     @Override
     public int getIncrements() {
