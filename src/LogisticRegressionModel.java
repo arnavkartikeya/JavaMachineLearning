@@ -76,6 +76,36 @@ public class LogisticRegressionModel {
         return w;
     }
 
+    public Matrix fit(int numIterations, double alpha, double lambda,Metrics test){
+        Matrix hyp;
+        Matrix err;
+        Matrix xNew = this.trainInputs;
+        Matrix temp2;
+        Matrix gradients;
+        Matrix w = initializeWeights();
+        test.setOutputs(trainOutputs);
+        for(int i = 0; i < numIterations; i++){
+            //hypothesis
+            hyp = trainInputs.multiplyMatrix(w);
+            hyp = sigmoid(hyp);
+            //error
+            err = hyp.subtractMatrix(trainOutputs);
+            //this is the actual derivatives of theta
+            gradients = xNew.transpose().multiplyMatrix(err);
+            //gradients * 1/m * alpha
+            Matrix gradientTemp = gradients.scalarMultiplication((alpha/this.trainInputs.getHeight()));
+            //w = weight matrix
+            w = w.scalarMultiplication((double)(1 + (alpha * lambda)/this.trainInputs.getHeight())).subtractMatrix(gradientTemp);
+            this.weights = w;
+            test.setHypothesis(round(hyp));
+            if(i%test.getIncrements() == 0){
+                System.out.println("Metric: " + test.compute());
+            }
+        }
+
+        return w;
+    }
+
 
     //one vs all logistic regression
     /*
