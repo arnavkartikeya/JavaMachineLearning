@@ -2,6 +2,42 @@
 In progress library for machine learning in Java aimed for easy and beginner friendly use. Currently has multivariable linear regression, logistic regression, and neural networks (more optimizers to come). 
 
 ## Linear Regression: 
+Linear Regression's goal is to take some set of data and predict a continous output value. An example of this is predicting the price of a house (which can be an value from 0 to infinity, a continous value) given the square footing of a house. In the code example given below, I created a data set with inputs 1 through 20 and outputs that model the equation 2x+5 with some random variation. This means the output for linear regression should be near 2x+5. 
+
+This first step is to read the data, which is done through the matrix class with the Matrix.readTxt() method, which takes a file, the amount of samples in the data, and the width of the data (number of features + output width (usually 1)). In this case the number of features is 1 x value so the width of the data is 2. Next, the data needs to be split into x (input features) and y (output) using the getCol() method which returns the specified columm. The full code for this would be: 
+
+```
+Matrix data = Matrix.readTxt(new File("src/test.txt"), 20, 2); 
+Matrix x = data.getCol(0);
+Matrix y = data.getCol(1); 
+```
+
+If x has more than 1 feature the splitCol method can be used which returns a new matrix of columns between two values. 
+
+To train the model, the LinearRegressionModel class is used, where the constructor takes the input and output data. Next, a metric is defined as to measure how well the model is doing, an example is mean squared loss. This metric requires however many iterations should be taken before it is computed. So for example putting 500 means every 500 iterations the metric is computed. A hypothesis matrix can be given in the constructor, although not neccesary. Lastly the output vector y is needed. Other metrics include accuracy. Finally, the LinearRegresssionModel method fit() is called, with parameters of numbers of iterations, learning rate, and a Metric. This method will print out the Metric computation into the console. Code shown below: 
+
+```
+MeanSquaredLoss loss = new MeanSquaredLoss(500, null, y); 
+LinearRegressionModel model = new LinearRegressionModel(5000, 0.01, loss);
+model.fit(5000, 0.01, loss);
+```
+
+The last part of linear regression is to make predictions with the model. This can be done with the predict() method, which takes a Matrix that it predicts the output of. The method getEquation() gives the line of best fit that the model predicts. 
+
+```
+//making a matrix
+double[][] testValues = {{7}}; 
+Matrix values = new Matrix(testValues); 
+//finding output
+Matrix answers = model.predict(values); 
+//printing model predictions
+answers.printMatrix();
+//printing line of best fit
+System.out.println("Equation: " + l.getEquation());
+```
+
+### Putting it all together: 
+
 
 ```
 public static void main(String[] args) throws FileNotFoundException {
