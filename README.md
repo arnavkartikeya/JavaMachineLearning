@@ -78,7 +78,7 @@ Decision boundary: -((-0.5358341227663898 + 2.242814233803413x_1) / -3.647198676
 Prediction output: 0.0
 ```
 
-#Update (3/24/2022): Neural Networks
+# Update (3/24/2022): Neural Networks
 * Added basic neural networks
 * Customizable dense layers and activations (Relu, Cross Entropy, Softmax, Sigmoid)
 * Optimized activations with Cross Entropy and Softmax combined
