@@ -78,9 +78,73 @@ Decision boundary: -((-0.5358341227663898 + 2.242814233803413x_1) / -3.647198676
 Prediction output: 0.0
 ```
 
-## What's to come: 
-* Gradient Checking (in progress)
-* Nueral Networks 
-* More Metrics (cross entropy, etc.)
-* Matrices will hold generic values rather than just doubles
+#Update (3/24/2022): Neural Networks
+* Added basic neural networks
+* Customizable dense layers and activations (Relu, Cross Entropy, Softmax, Sigmoid)
+* Optimized activations with Cross Entropy and Softmax combined
+* Parameters update with momentum and 1/t learning rate decay
 
+
+## Code example (Spiral Dataset):
+```
+        Matrix data = Matrix.readTxt(new File("src/test.txt"), 300, 3);
+        Matrix x = data.splitCol(0, 1);
+        Matrix y = data.getCol(2);
+
+        //creating activations and dense layers
+        Activation relu = new Relu();
+        SoftMax m = new SoftMax();
+        CategoricalCrossEntropy c = new CategoricalCrossEntropy();
+        NetworkLayer first = new NetworkLayer(2, 64);
+        NetworkLayer second = new NetworkLayer(64 , 3);
+        Matrix nextForward = second.feedForward(forward);
+        SoftmaxAndCross loss_activation = new SoftmaxAndCross(m, c);
+
+        //creating optimizers with decay and momentum 
+        OptimizerSGD s = new OptimizerSGD( 1, 0.01, 0.9, first);
+        OptimizerSGD s2 = new OptimizerSGD(1, 0.01, 0.9, second);
+
+
+        //forward and backward propagation
+        for(int epoch = 0; epoch < 10001 ; epoch++){
+            forward = first.feedForward(x);
+            Matrix f = relu.activate(forward);
+            nextForward = second.feedForward(f);
+            loss_activation.forward(nextForward, y);
+            out = loss_activation.getOutput();
+
+            dValue = loss_activation.backwards(new Matrix(out.getArray()), y);
+            Matrix d = second.backwards(dValue);
+            Matrix d1 = relu.backwards(d);
+            Matrix d2 = first.backwards(d1);
+
+            s.update(first);
+            s2.update(second);
+
+            if(epoch % 1000 == 0){
+                System.out.println("Accuracy: " + loss_activation.getAccuracy() + " Loss: " + loss_activation.getLoss());
+                //first.getWeights().printMatrix();
+            }
+        }
+```
+
+## Output
+```
+Accuracy: 0.30666666666666664 Loss: 1.098613999008802
+Accuracy: 0.6 Loss: 0.7834813071122058
+Accuracy: 0.6766666666666666 Loss: 0.6941580582381379
+Accuracy: 0.71 Loss: 0.6554447386154415
+Accuracy: 0.7466666666666667 Loss: 0.6227082533674139
+Accuracy: 0.78 Loss: 0.6002097748068823
+Accuracy: 0.79 Loss: 0.5808453125800811
+Accuracy: 0.8066666666666666 Loss: 0.5652433231196666
+Accuracy: 0.8033333333333333 Loss: 0.5527555188170457
+Accuracy: 0.7966666666666666 Loss: 0.5423047872577976
+Accuracy: 0.8033333333333333 Loss: 0.5329574453342741
+```
+
+### What's to come:
+* Further optimizers
+* Code clean up 
+* Documentation
+* Increasing ease of use for clients  
