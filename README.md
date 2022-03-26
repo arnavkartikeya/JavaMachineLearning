@@ -76,6 +76,11 @@ Equation: 4.999952867236871 + 2.0000034542866003x_1
 
 
 ## Logistic Regression:
+Logistic Regression is similar to linear regression, however rather than outputing a continuous value, it outputs a discrete one. In most cases it is typcially predicting a class (cat vs dog or daisy vs rose vs tulip). Logistic regression is implemented almost exactly as linear regression. 
+
+The main differences include a different Metrics class, `Accuracy`, instead of `MeanSquaredLoss`, and using the `LogisticRegressionModel` instead of the LinearRegressionModel. LogisticRegressionModel has an included method `decisionBoundary()` which gives the decision boundary that splits two classes. Multivariable Logistic Regression is also implemented. The code example below is multivariate. 
+
+
 ```
 public static void main(String[] args) throws FileNotFoundException {
         //reading data
@@ -119,6 +124,52 @@ Prediction output: 0.0
 * Customizable dense layers and activations (Relu, Cross Entropy, Softmax, Sigmoid)
 * Optimized activations with Cross Entropy and Softmax combined
 * Parameters update with momentum and 1/t learning rate decay
+
+Neural Networks are now implemented in JavaMachineLearning, and more ease of use applications will come. For now, it operates much like python libraries with Dense layers. The included classes are `NetworkLayers`, `Activation`, and `OptimizerSGD`. 
+
+Neural networks are built rather simply. The first step is to read data much like linear or logistic regression and splitting the data between input and output. The second step is to build the activation functions. Typically layers that are not the last output layer have activations of `Relu` or `Sigmoid`, although Relu is used more commonly. `SoftMax` and `CategoricalCrossEntropy` are created to later create a `SoftmaxAndCross` optimizer, which is a more effecient implementation than having both activations seperately. 
+
+```
+//code for creating activations
+Activation relu = new Activation();
+SoftmaxAndCross loss_activation = new SoftmaxAndCross(new CategoricalCrossEntropy(), new Softmax()); 
+```
+
+After creating the activations, the next step is to build the architecture of the network. This is done by creating a `NetworkLayer` which takes the nubmer of neurons in the current layer and the number of neurons in the next layer. It can also take the activation as part of the initialization, but it is not neccesary. If you choose not to include the activation inside the network layer, each activation has it's own `activate()` and `backward()` method which will be used during forward and back propagation. Future implentations will standarize everything to `forward()`. 
+
+```
+//code for building network architecture (in this case a network that takes 2 inputs, has a single hidden layer of 64 neurons, and an output of 3 neurons, which indicated 3 classes).
+NetworkLayer first = new NetworkLayer(2, 64); 
+NetworkLayer second = new NetworkLayer(64, 3); 
+```
+
+Finally, forward propagation, backwards propagation and optimization are needed. Forward and backwards propagation are needed to create a Matrix of dValues, which are used by the `OptimizerSGD` class to optimize the weights and biases of each NetworkLayer. Forward propagation works by using the `feedForward()` or `forward()` method for each part of the network. Backwards propagation works in the same way, but using `backwards()` and in the reverse order of forward. Finally the optimizers are initizalized. They require a learning rate, decay rate, momentum, and NetworkLayer. If you are unsure about these hyperparameters, later implentations will have different optimizers which require less. OptimizerSGD will use the `update()` method for the NetworkLayer associated with it. 
+
+```
+//creating optimizers and implementing forward and backwards propagation
+OptimizerSGD s = new OptimizerSGD( 1, 0.01, 0.9, first);
+OptimizerSGD s2 = new OptimizerSGD(1, 0.01, 0.9, second);
+
+//forward propagation
+forward = first.feedForward(x);
+Matrix f = relu.activate(forward);
+nextForward = second.feedForward(f);
+loss_activation.forward(nextForward, y);
+//forward propogation output and backward propagation input 
+out = loss_activation.getOutput();
+
+//backward propagation
+dValue = loss_activation.backwards(new Matrix(out.getArray()), y);
+ Matrix d = second.backwards(dValue);
+Matrix d1 = relu.backwards(d);
+first.backwards(d1);
+
+//updating using update() method from optimizers, taking a parameter of the NetworkLayer. 
+s.update(first);
+s2.update(second);
+```
+
+The forward and backward propagation, as well as the update() method can be put in a for loop for any amount of iterations for better training. In terms of metrics, the SoftmaxAndCross class has a `getAccuracy()` method which gives accuracy from Network to dataset, and a `getLoss()` which returns cross entropy loss. 
 
 
 ## Code example (Spiral Dataset):
